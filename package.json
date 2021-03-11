@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "frontend"
+    "frontend",
+    "functions"
   ],
   "scripts": {
     "start:frontend": "yarn --cwd ./frontend start",
