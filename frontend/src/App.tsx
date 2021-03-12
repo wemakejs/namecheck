@@ -1,27 +1,22 @@
-import { makeStyles } from "@material-ui/core";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
-import { Checker, Menu } from "src/components";
-import { checkers } from "src/utils";
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-  },
-});
+import { Dashboard } from "src/components";
+import { Language, LanguageContext } from "src/utils/contexts";
 
 const App: FC = () => {
-  const styles = useStyles();
-  return (
-    <div className={styles.root}>
-      <Menu />
+  const [language, setLanguage] = useState<Language>(Language.en);
 
-      <Checker
-        fn={checkers.instagram.fn}
-        name={"billfeng"}
-        title={"facebook"}
-      />
-    </div>
+  return (
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage: (language) => {
+          setLanguage(language);
+        },
+      }}
+    >
+      <Dashboard />
+    </LanguageContext.Provider>
   );
 };
 

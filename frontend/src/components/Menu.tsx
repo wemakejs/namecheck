@@ -4,6 +4,7 @@ import {
   Divider,
   Drawer,
   Hidden,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -11,12 +12,18 @@ import {
   ListSubheader,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Menu as MenuIcon } from "@material-ui/icons";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  fab: {
+    position: "absolute",
+    left: 10,
+    top: 10,
+  },
   drawer: {
     [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
@@ -115,35 +122,42 @@ export const Menu = () => {
   );
 
   return (
-    <section className={styles.drawer}>
+    <>
       <Hidden smUp implementation="css">
-        <Drawer
-          // container={container}
-          variant="temporary"
-          anchor="left"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          classes={{
-            paper: styles.drawerPaper,
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-        >
-          {drawer}
-        </Drawer>
+        <IconButton className={styles.fab} onClick={handleDrawerToggle}>
+          <MenuIcon />
+        </IconButton>
       </Hidden>
-      <Hidden xsDown implementation="css">
-        <Drawer
-          classes={{
-            paper: styles.drawerPaper,
-          }}
-          variant="permanent"
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Hidden>
-    </section>
+      <section className={styles.drawer}>
+        <Hidden smUp implementation="css">
+          <Drawer
+            // container={container}
+            variant="temporary"
+            anchor="left"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: styles.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: styles.drawerPaper,
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </section>
+    </>
   );
 };
