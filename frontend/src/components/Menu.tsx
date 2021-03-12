@@ -12,7 +12,7 @@ import {
   ListSubheader,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Menu as MenuIcon } from "@material-ui/icons";
+import { Settings } from "@material-ui/icons";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { useCallback, useState } from "react";
 
@@ -125,7 +125,7 @@ export const Menu = () => {
     <>
       <Hidden smUp implementation="css">
         <IconButton className={styles.fab} onClick={handleDrawerToggle}>
-          <MenuIcon />
+          <Settings />
         </IconButton>
       </Hidden>
       <section className={styles.drawer}>
