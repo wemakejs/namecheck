@@ -7,7 +7,7 @@ import instagram from "src/resource/instagram.svg";
 import twitter from "src/resource/twitter.svg";
 
 import { Checker } from "./Checker";
-import { Menu } from "./Menu";
+// import { Menu } from "./Menu";
 import { SearchBar } from "./SearchBar";
 
 const useStyles = makeStyles({
@@ -54,7 +54,7 @@ export const Dashboard: FC = memo(() => {
 
   return (
     <div className={styles.root}>
-      <Menu />
+      {/* <Menu /> */}
       <div className={styles.main}>
         <div className={styles.header}>
           <Typography variant="h3" className={styles.title}>
