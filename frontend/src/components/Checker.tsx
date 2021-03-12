@@ -52,13 +52,11 @@ export const Checker: FC<CheckerProps> = ({
   const s = useString();
 
   useEffect(() => {
-    console.log(name);
     if (name) {
       const check = async () => {
         setStatus("checking");
         try {
           const { data } = await checkName(name + tld, platform);
-          // console.log(platform, data);
           setStatus(data.available ? "available" : "unavailable");
         } catch (err) {
           console.error(err);
