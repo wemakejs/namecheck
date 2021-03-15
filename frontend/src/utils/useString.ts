@@ -3,15 +3,24 @@ import { LanguageContext } from "./contexts";
 
 const stringMap: Record<string, Record<string, string>> = {
   en: {
+    // sections
+    domainNames: "Domain Names",
+    socialMedia: "Social Media",
+
+    // statuses
     available: "Available",
     checking: "Checking...",
+    unavailable: "Taken",
+    waiting: "...",
+
+    // platforms
     facebook: "Facebook",
     instagram: "Instagram",
+    twitch: "Twitch",
     twitter: "Twitter",
-    unavailable: "Taken",
     username: "Username",
-    waiting: "...",
     web: "Web",
+    youtube: "YouTube",
   },
 };
 
