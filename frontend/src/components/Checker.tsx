@@ -7,7 +7,6 @@ import {
 } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import { Web } from "@material-ui/icons";
 import React, { FC, useEffect, useState } from "react";
 
 import { checkName, useString } from "src/utils";
@@ -20,6 +19,9 @@ const useStyles = makeStyles({
   content: {
     display: "flex",
     padding: 12,
+  },
+  icon: {
+    width: 44,
   },
   info: {
     alignItems: "center",
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
 });
 
 interface CheckerProps {
-  icon?: string;
+  icon: string;
   link: string;
   name: string;
   platform: string;
@@ -82,15 +84,7 @@ export const Checker: FC<CheckerProps> = ({
         target="_blank"
       >
         <CardContent className={styles.content}>
-          {icon ? (
-            <img alt="icon" src={icon} style={{ width: 44 }} />
-          ) : (
-            <Web
-              fontSize="inherit"
-              color="disabled"
-              style={{ fontSize: 44, display: "block" }}
-            />
-          )}
+          <img alt="icon" src={icon} className={styles.icon} />
           <div style={{ marginLeft: 12 }}>
             <Typography variant="body1" color="textPrimary">
               {platform === "web" ? tld : s(platform)}
