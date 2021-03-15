@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 
 import { checkers } from "./checkers";
 
-export const checkName = functions.https.onCall(async (data, context) => {
+export const checkName = functions.https.onCall(async (data) => {
   const {
     name,
     platform,
