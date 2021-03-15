@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { debounce } from "lodash";
 import React, { FC, memo, useCallback, useState } from "react";
 
+import domain from "src/resource/domain.svg";
 import instagram from "src/resource/instagram.svg";
 import twitter from "src/resource/twitter.svg";
 
@@ -19,6 +20,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
+    margin: "auto",
+    maxWidth: 1200,
     padding: 10,
   },
   header: {
@@ -29,6 +32,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   title: {
+    fontFamily: "Comfortaa",
     marginBottom: 20,
   },
   checkers: {
@@ -36,6 +40,12 @@ const useStyles = makeStyles({
     gridGap: 10,
     gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
     width: "100%",
+  },
+  sectionTitle: {
+    fontFamily: "Roboto",
+    gridColumn: "1/-1",
+    marginTop: 20,
+    padding: "0 12px",
   },
 });
 
@@ -64,36 +74,48 @@ export const Dashboard: FC = memo(() => {
         </div>
 
         <div className={styles.checkers}>
+          <Typography className={styles.sectionTitle} variant="body1">
+            Domain Names
+          </Typography>
           <Checker
+            icon={domain}
             link={`http://${name}.com/`}
             name={name}
             platform="web"
             tld=".com"
           />
           <Checker
+            icon={domain}
             link={`http://${name}.net/`}
             name={name}
             platform="web"
             tld=".net"
           />
           <Checker
+            icon={domain}
             link={`http://${name}.org/`}
             name={name}
             platform="web"
             tld=".org"
           />
           <Checker
+            icon={domain}
             link={`http://${name}.co/`}
             name={name}
             platform="web"
             tld=".co"
           />
           <Checker
+            icon={domain}
             link={`http://${name}.io/`}
             name={name}
             platform="web"
             tld=".io"
           />
+
+          <Typography className={styles.sectionTitle} variant="body1">
+            Social Media
+          </Typography>
           <Checker
             icon={instagram}
             link={`http://instagram.com/${name}/`}
