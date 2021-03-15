@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Comfortaa";
+  src: local("Comfortaa"), url(./Comfortaa-Regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto"), url(./Roboto-Regular.ttf) format("truetype");
+}
+
 * {
   box-sizing: border-box;
 }
