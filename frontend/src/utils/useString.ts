@@ -6,6 +6,8 @@ const stringMap: Record<string, Record<string, string>> = {
     // sections
     domainNames: "Domain Names",
     socialMedia: "Social Media",
+    video: "Video & Streaming",
+    productivity: "Productivity",
 
     // statuses
     available: "Available",

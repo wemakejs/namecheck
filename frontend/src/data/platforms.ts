@@ -90,7 +90,7 @@ export const platformGroups: PlatformGroup[] = [
     ],
   },
   {
-    id: "Video & Streaming",
+    id: "video",
     platforms: [
       {
         id: "youtube",
@@ -100,6 +100,16 @@ export const platformGroups: PlatformGroup[] = [
       {
         id: "twitch",
         getURL: (username) => `https://www.twitch.tv/${username}`,
+        selectedByDefault: true,
+      },
+    ],
+  },
+  {
+    id: "productivity",
+    platforms: [
+      {
+        id: "github",
+        getURL: (username) => `https://www.github.com/${username}`,
         selectedByDefault: true,
       },
     ],
