@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   },
   sectionTitle: {
     fontFamily: "Roboto",
-    gridColumn: "1/-1",
+    gridColumn: "1 / -1",
     marginTop: 20,
     padding: "0 12px",
   },
