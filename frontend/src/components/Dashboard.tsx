@@ -12,6 +12,7 @@ import { SearchBar } from "./SearchBar";
 const useStyles = makeStyles({
   root: {
     display: "flex",
+    paddingBottom: 100,
   },
   main: {
     alignItems: "center",
