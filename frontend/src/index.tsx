@@ -2,9 +2,11 @@ import firebase from "firebase/app";
 import "firebase/functions";
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 
 import "src/styles/global.css";
 import App from "src/App";
+import { store } from "src/redux";
 import reportWebVitals from "src/utils/reportWebVitals";
 
 const fbConfig = {
@@ -24,7 +26,9 @@ if (process.env.NODE_ENV === "development") {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
