@@ -3,10 +3,7 @@ import * as functions from "firebase-functions";
 import { checkers } from "./checkers";
 
 export const checkName = functions.https.onCall(async (data) => {
-  const {
-    name,
-    platform,
-  }: { name: string; platform: keyof typeof checkers } = data;
+  const { name, platform, tld = "" } = data;
   const checker = checkers[platform];
 
   if (
@@ -14,11 +11,12 @@ export const checkName = functions.https.onCall(async (data) => {
     typeof platform !== "string" ||
     !name ||
     !platform ||
+    (platform === "web" && !tld) ||
     !checker
   ) {
     return { error: "Invalid Query" };
   }
 
-  const available = await checker(name);
+  const available = await checker(name + tld);
   return { available };
 });
