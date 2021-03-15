@@ -1,6 +1,9 @@
 import React, { FC, useState } from "react";
 
-import { Dashboard } from "src/components";
+import {
+  Dashboard,
+  // Footer
+} from "src/components";
 import { Language, LanguageContext } from "src/utils/contexts";
 
 const App: FC = () => {
@@ -16,6 +19,7 @@ const App: FC = () => {
       }}
     >
       <Dashboard />
+      {/* <Footer /> */}
     </LanguageContext.Provider>
   );
 };
