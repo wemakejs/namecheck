@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "start:frontend": "yarn --cwd ./frontend start",
+    "start:functions": "firebase emulators:start --only functions",
     "build:frontend": "yarn --cwd ./frontend build",
     "build:functions": "yarn --cwd ./functions build"
   }
