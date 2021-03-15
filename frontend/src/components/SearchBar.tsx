@@ -1,7 +1,11 @@
 import { InputBase, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Search } from "@material-ui/icons";
+import { debounce } from "lodash";
 import React, { FC, useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { set } from "src/redux/slices/usernameSlice";
 import { useString } from "src/utils";
 
 const useStyles = makeStyles({
@@ -19,21 +23,23 @@ const useStyles = makeStyles({
   },
 });
 
-interface SearchBarProps {
-  setName: (name: string) => void;
-}
+const debouncedSetUsername = debounce((username, setUsername) => {
+  setUsername(username);
+}, 500);
 
-export const SearchBar: FC<SearchBarProps> = ({ setName }) => {
+export const SearchBar: FC = () => {
   const s = useString();
+  const dispatch = useDispatch();
+
   const [localName, setLocalName] = useState("");
 
   const handleNameChange = useCallback(
     (e) => {
       const value = e.target.value.replace(/ /g, "");
       setLocalName(value);
-      setName(value);
+      debouncedSetUsername(value, (name: string) => dispatch(set(name)));
     },
-    [setName]
+    [dispatch]
   );
 
   const styles = useStyles();

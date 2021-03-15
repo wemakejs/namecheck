@@ -9,6 +9,8 @@ import { green } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { FC, useEffect, useState } from "react";
 
+import { useSelector } from "src/redux";
+import { icons } from "src/resource";
 import { checkName, useString } from "src/utils";
 
 const useStyles = makeStyles({
@@ -21,6 +23,7 @@ const useStyles = makeStyles({
     padding: 12,
   },
   icon: {
+    height: 44,
     width: 44,
   },
   info: {
@@ -29,36 +32,29 @@ const useStyles = makeStyles({
   },
   progress: {
     bottom: 0,
-    height: 3,
+    height: 1,
     position: "absolute",
     width: "100%",
   },
 });
 
 interface CheckerProps {
-  icon: string;
-  link: string;
-  name: string;
   platform: string;
   tld?: string;
+  getURL: (getURL: string) => string;
 }
 
-export const Checker: FC<CheckerProps> = ({
-  icon,
-  link,
-  name,
-  platform,
-  tld = "",
-}) => {
+export const Checker: FC<CheckerProps> = ({ platform, tld = "", getURL }) => {
   const [status, setStatus] = useState("waiting");
   const s = useString();
+  const username = useSelector((state) => state.username);
 
   useEffect(() => {
-    if (name) {
+    if (username) {
       const check = async () => {
         setStatus("checking");
         try {
-          const { data } = await checkName(name + tld, platform);
+          const { data } = await checkName(username, platform, tld);
           setStatus(data.available ? "available" : "unavailable");
         } catch (err) {
           console.error(err);
@@ -68,7 +64,7 @@ export const Checker: FC<CheckerProps> = ({
     } else {
       setStatus("waiting");
     }
-  }, [name, platform, tld]);
+  }, [username, platform, tld]);
 
   const styles = useStyles();
 
@@ -80,11 +76,11 @@ export const Checker: FC<CheckerProps> = ({
       <CardActionArea
         component="a"
         disabled={status !== "available" && status !== "unavailable"}
-        href={link}
+        href={getURL(username)}
         target="_blank"
       >
         <CardContent className={styles.content}>
-          <img alt="icon" src={icon} className={styles.icon} />
+          <img alt="icon" src={icons[platform]} className={styles.icon} />
           <div style={{ marginLeft: 12 }}>
             <Typography variant="body1" color="textPrimary">
               {platform === "web" ? tld : s(platform)}
