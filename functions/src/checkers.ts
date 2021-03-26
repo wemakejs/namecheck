@@ -1,4 +1,5 @@
 import * as dns from "dns";
+import got from "got";
 import * as puppeteer from "puppeteer";
 
 const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
@@ -10,9 +11,15 @@ const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
 
 export const checkers: Record<string, (name: string) => Promise<boolean>> = {
   facebook: async (name) => {
-    const page = await getPage(`https://facebook.com/${name}/`);
-    const title = await page.title();
-    return title.toLowerCase().includes("page not found");
+    try {
+      await got(`https://graph.facebook.com/v10.0/${name}`, {
+        responseType: "json",
+      });
+      return false;
+    } catch (e) {
+      const { message } = e.response.body.error;
+      return message.toLowerCase().includes("do not exist");
+    }
   },
 
   github: async (name) => {
