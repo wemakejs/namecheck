@@ -29,9 +29,12 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
   },
 
   instagram: async (name) => {
-    const page = await getPage(`https://instagram.com/${name}/`);
-    const title = await page.title();
-    return title.toLowerCase().includes("page not found");
+    try {
+      await got(`https://www.instagram.com/${name}/`);
+      return false;
+    } catch (e) {
+      return true;
+    }
   },
 
   twitch: async (name) => {
