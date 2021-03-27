@@ -146,6 +146,13 @@ export const platformGroups: PlatformGroup[] = [
         isValid: (username) => true,
         selectedByDefault: true,
       },
+      {
+        id: "patreon",
+        getURL: (username) => `https://www.patreon.com/${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
     ],
   },
 ];

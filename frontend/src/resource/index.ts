@@ -1,6 +1,7 @@
 import facebook from "./facebook.svg";
 import github from "./github.svg";
 import instagram from "./instagram.svg";
+import patreon from "./patreon.svg";
 import reddit from "./reddit.svg";
 import twitch from "./twitch.svg";
 import twitter from "./twitter.svg";
@@ -11,6 +12,7 @@ export const icons: Record<string, string> = {
   facebook,
   github,
   instagram,
+  patreon,
   reddit,
   twitch,
   twitter,

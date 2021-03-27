@@ -56,6 +56,18 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
+  patreon: async (name) => {
+    try {
+      await got(`https://www.patreon.com/${name}/`);
+      return { available: false };
+    } catch (e) {
+      return { available: true };
+    }
+  },
+
+  /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
   reddit: async (name) => {
     try {
       await got(`https://www.reddit.com/user/${name}/`);
