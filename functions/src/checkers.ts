@@ -1,9 +1,11 @@
 import * as dns from "dns";
 import * as functions from "firebase-functions";
-import got from "got";
+import got, { Response } from "got";
 
-const log = (platform: string, username: string) => {
-  functions.logger.log(`Checking ${platform} for username: ${username}`);
+const log = (platform: string, username: string, res: Response | undefined) => {
+  functions.logger.log(
+    `Checking [${platform}] for username [${username}] finished with status code: [${res?.statusCode}]`
+  );
 };
 
 type CheckerResponse = {
@@ -20,17 +22,20 @@ export const checkers: Record<string, Checker> = {
    * is taken or not.
    */
   facebook: async (username) => {
-    log("facebook", username);
+    let res: Response<{ error: { message: string } }> | undefined;
     try {
-      await got(`https://graph.facebook.com/v10.0/${username}`, {
+      res = await got(`https://graph.facebook.com/v10.0/${username}`, {
         responseType: "json",
       });
       // The request should fail due to missing auth token.
       // The line below shouldn't be reached.
       return { error: 500 };
-    } catch (e) {
-      const { message } = e.response.body.error;
-      return { available: message.toLowerCase().includes("do not exist") };
+    } catch (err) {
+      res = err.response;
+      const message = res?.body.error.message;
+      return { available: message?.toLowerCase().includes("do not exist") };
+    } finally {
+      log("facebook", username, res);
     }
   },
 
@@ -38,12 +43,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   github: async (username) => {
-    log("github", username);
+    let res: Response | undefined;
     try {
-      await got(`https://github.com/${username}/`);
+      res = await got(`https://github.com/${username}/`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       return { available: true };
+    } finally {
+      log("github", username, res);
     }
   },
 
@@ -51,12 +59,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   instagram: async (username) => {
-    log("instagram", username);
+    let res: Response | undefined;
     try {
-      await got(`https://www.instagram.com/${username}/`);
+      res = await got(`https://www.instagram.com/${username}/`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       return { available: true };
+    } finally {
+      log("instagram", username, res);
     }
   },
 
@@ -64,12 +75,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   medium: async (username) => {
-    log("medium", username);
+    let res: Response | undefined;
     try {
-      await got(`https://medium.com/@${username}`);
+      res = await got(`https://medium.com/@${username}`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       return { available: true };
+    } finally {
+      log("medium", username, res);
     }
   },
 
@@ -77,12 +91,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   patreon: async (username) => {
-    log("patreon", username);
+    let res: Response | undefined;
     try {
-      await got(`https://www.patreon.com/${username}`);
+      res = await got(`https://www.patreon.com/${username}`);
       return { available: false };
     } catch (e) {
+      res = e.response;
       return { available: true };
+    } finally {
+      log("patreon", username, res);
     }
   },
 
@@ -90,12 +107,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   reddit: async (username) => {
-    log("reddit", username);
+    let res: Response | undefined;
     try {
-      await got(`https://www.reddit.com/user/${username}/`);
+      res = await got(`https://www.reddit.com/user/${username}/`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       return { available: true };
+    } finally {
+      log("reddit", username, res);
     }
   },
 
@@ -103,12 +123,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   tiktok: async (username) => {
-    log("tiktok", username);
+    let res: Response | undefined;
     try {
-      await got(`https://www.tiktok.com/@${username}`);
+      res = await got(`https://www.tiktok.com/@${username}`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       return { available: true };
+    } finally {
+      log("tiktok", username, res);
     }
   },
 
@@ -118,14 +141,14 @@ export const checkers: Record<string, Checker> = {
    * separate request.
    */
   twitch: async (username) => {
-    log("twitch", username);
+    let res: Response<{ data: [] }> | undefined;
     try {
       const { client_id, client_secret } = functions.config().twitch;
       const tokenRes = await got.post<{ access_token: string }>(
         `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`,
         { responseType: "json" }
       );
-      const res = await got<{ data: [] }>(
+      res = await got<{ data: [] }>(
         `https://api.twitch.tv/helix/users?login=${username}`,
         {
           headers: {
@@ -136,12 +159,15 @@ export const checkers: Record<string, Checker> = {
         }
       );
       return { available: res.body.data.length === 0 };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       functions.logger.error(
         `Error occurred when checking Twitch for username: ${username}`,
-        `Status code: ${e.response.statusCode}`
+        `Status code: ${res?.statusCode}`
       );
       return { error: 500 };
+    } finally {
+      log("twitch", username, res);
     }
   },
 
@@ -150,10 +176,10 @@ export const checkers: Record<string, Checker> = {
    * works with a bearer token.
    */
   twitter: async (username) => {
-    log("twitter", username);
+    let res: Response<{ data?: {} }> | undefined;
     try {
       const { bearer_token } = functions.config().twitter;
-      const res = await got<{ data?: {} }>(
+      res = await got<{ data?: {} }>(
         `https://api.twitter.com/2/users/by/username/${username}`,
         {
           headers: { Authorization: `Bearer ${bearer_token}` },
@@ -161,12 +187,15 @@ export const checkers: Record<string, Checker> = {
         }
       );
       return { available: !res.body.data };
-    } catch (e) {
+    } catch (err) {
+      res = err.response;
       functions.logger.error(
         `Error occurred when checking Twitter for username: ${username}`,
-        `Status code: ${e.response.statusCode}`
+        `Status code: ${res?.statusCode}`
       );
       return { error: 500 };
+    } finally {
+      log("twitter", username, res);
     }
   },
 
@@ -177,7 +206,7 @@ export const checkers: Record<string, Checker> = {
    * accurate method could be found.
    */
   web: async (domainName) => {
-    log("web", domainName);
+    log("web", domainName, undefined);
     return new Promise((resolve) => {
       dns.resolve4(domainName, (err) => {
         resolve({ available: !!err });
@@ -189,12 +218,15 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   youtube: async (username) => {
-    log("youtube", username);
+    let res: Response | undefined;
     try {
-      await got(`https://www.youtube.com/${username}`);
+      res = await got(`https://www.youtube.com/${username}`);
       return { available: false };
-    } catch (e) {
+    } catch (err) {
+      res = err.res;
       return { available: true };
+    } finally {
+      log("youtube", username, res);
     }
   },
 };
