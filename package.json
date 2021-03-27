@@ -11,6 +11,8 @@
     "start:functions": "firebase emulators:start --only functions",
     "build:frontend": "yarn --cwd ./frontend build",
     "build:functions": "yarn --cwd ./functions build",
-    "deploy:functions": "firebase deploy --only functions"
+    "deploy:functions": "firebase deploy --only functions",
+    "config:functions": "yarn --cwd ./functions config:functions",
+    "postinstall": "yarn config:functions"
   }
 }
