@@ -1,14 +1,6 @@
 import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got from "got";
-// import * as puppeteer from "puppeteer";
-
-// const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
-//   const browser = await puppeteer.launch(launchOptions);
-//   const page = await browser.newPage();
-//   await page.goto(URL, gotoOptions);
-//   return page;
-// };
 
 type Checker = (
   name: string
