@@ -11,11 +11,19 @@ const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
 };
 
 export const checkers: Record<string, (name: string) => Promise<boolean>> = {
+  /**
+   * The Facebook Graph API endpoint https://graph.facebook.com/v10.0/${name}
+   * does not work without an authorization token, but nevertheless there is
+   * enough information in the error response to determine whether the username
+   * is taken or not.
+   */
   facebook: async (name) => {
     try {
       await got(`https://graph.facebook.com/v10.0/${name}`, {
         responseType: "json",
       });
+      // The request should fail due to missing auth token.
+      // The line below shouldn't be reached.
       return false;
     } catch (e) {
       const { message } = e.response.body.error;
@@ -29,6 +37,10 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
     return title.toLowerCase().includes("page not found");
   },
 
+  /**
+   * Conveniently, the Instagram website returns status 200 for usernames that
+   * exist and 404 for ones that don't. This is all we need.
+   */
   instagram: async (name) => {
     try {
       await got(`https://www.instagram.com/${name}/`);
