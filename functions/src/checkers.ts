@@ -57,14 +57,34 @@ export const checkers: Record<string, Checker> = {
     }
   },
 
+  /**
+   * Wasn't able to find a public way to check username, but the Twitch API
+   * works with a bearer token. The bearer token has to be acquired through a
+   * separate request.
+   */
   twitch: async (name) => {
-    const page = await getPage(
-      `https://twitch.com/${name}/`,
-      {},
-      { waitUntil: "networkidle2" }
-    );
-    const content = await page.content();
-    return content.toLowerCase().includes("sorry");
+    try {
+      const { client_id, client_secret } = functions.config().twitch;
+      const tokenRes = await got.post<{ access_token: string }>(
+        `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`,
+        { responseType: "json" }
+      );
+      const res = await got<{ data: [] }>(
+        `https://api.twitch.tv/helix/users?login=${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenRes.body.access_token}`,
+            "Client-Id": client_id,
+          },
+          responseType: "json",
+        }
+      );
+      return { available: res.body.data.length === 0 };
+    } catch (e) {
+      console.log(e.response.body);
+      console.log(e.response.statusCode);
+      return { error: true };
+    }
   },
 
   /**
