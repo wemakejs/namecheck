@@ -1,14 +1,14 @@
 import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got from "got";
-import * as puppeteer from "puppeteer";
+// import * as puppeteer from "puppeteer";
 
-const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
-  const browser = await puppeteer.launch(launchOptions);
-  const page = await browser.newPage();
-  await page.goto(URL, gotoOptions);
-  return page;
-};
+// const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
+//   const browser = await puppeteer.launch(launchOptions);
+//   const page = await browser.newPage();
+//   await page.goto(URL, gotoOptions);
+//   return page;
+// };
 
 type Checker = (
   name: string
@@ -38,15 +38,20 @@ export const checkers: Record<string, Checker> = {
     }
   },
 
+  /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
   github: async (name) => {
-    const page = await getPage(`https://github.com/${name}/`);
-    const title = await page.title();
-    return { available: title.toLowerCase().includes("page not found") };
+    try {
+      await got(`https://github.com/${name}/`);
+      return { available: false };
+    } catch (e) {
+      return { available: true };
+    }
   },
 
   /**
-   * Conveniently, the Instagram website returns status 200 for usernames that
-   * exist and 404 for ones that don't. This is all we need.
+   * Response status code is 200 for existing user and 404 for non-existing.
    */
   instagram: async (name) => {
     try {
