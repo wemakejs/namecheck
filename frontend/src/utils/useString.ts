@@ -17,7 +17,10 @@ const stringMap: Record<string, Record<string, string>> = {
 
     // platforms
     facebook: "Facebook",
+    github: "GitHub",
     instagram: "Instagram",
+    patreon: "Patreon",
+    reddit: "Reddit",
     twitch: "Twitch",
     twitter: "Twitter",
     username: "Username",
@@ -31,6 +34,6 @@ export const useString = () => {
   const map = stringMap[language] || stringMap.en;
 
   return (id: string) => {
-    return map[id] || id;
+    return map[id] || stringMap.en[id] || id;
   };
 };
