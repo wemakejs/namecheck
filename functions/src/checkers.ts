@@ -19,10 +19,10 @@ export const checkers: Record<string, Checker> = {
    * enough information in the error response to determine whether the username
    * is taken or not.
    */
-  facebook: async (name) => {
-    log("facebook", name);
+  facebook: async (username) => {
+    log("facebook", username);
     try {
-      await got(`https://graph.facebook.com/v10.0/${name}`, {
+      await got(`https://graph.facebook.com/v10.0/${username}`, {
         responseType: "json",
       });
       // The request should fail due to missing auth token.
@@ -37,10 +37,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  github: async (name) => {
-    log("github", name);
+  github: async (username) => {
+    log("github", username);
     try {
-      await got(`https://github.com/${name}/`);
+      await got(`https://github.com/${username}/`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -50,10 +50,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  instagram: async (name) => {
-    log("instagram", name);
+  instagram: async (username) => {
+    log("instagram", username);
     try {
-      await got(`https://www.instagram.com/${name}/`);
+      await got(`https://www.instagram.com/${username}/`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -63,10 +63,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  medium: async (name) => {
-    log("medium", name);
+  medium: async (username) => {
+    log("medium", username);
     try {
-      await got(`https://medium.com/@${name}`);
+      await got(`https://medium.com/@${username}`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -76,10 +76,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  patreon: async (name) => {
-    log("patreon", name);
+  patreon: async (username) => {
+    log("patreon", username);
     try {
-      await got(`https://www.patreon.com/${name}`);
+      await got(`https://www.patreon.com/${username}`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -89,10 +89,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  reddit: async (name) => {
-    log("reddit", name);
+  reddit: async (username) => {
+    log("reddit", username);
     try {
-      await got(`https://www.reddit.com/user/${name}/`);
+      await got(`https://www.reddit.com/user/${username}/`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -102,10 +102,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  tiktok: async (name) => {
-    log("tiktok", name);
+  tiktok: async (username) => {
+    log("tiktok", username);
     try {
-      await got(`https://www.tiktok.com/@${name}`);
+      await got(`https://www.tiktok.com/@${username}`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -117,8 +117,8 @@ export const checkers: Record<string, Checker> = {
    * works with a bearer token. The bearer token has to be acquired through a
    * separate request.
    */
-  twitch: async (name) => {
-    log("twitch", name);
+  twitch: async (username) => {
+    log("twitch", username);
     try {
       const { client_id, client_secret } = functions.config().twitch;
       const tokenRes = await got.post<{ access_token: string }>(
@@ -126,7 +126,7 @@ export const checkers: Record<string, Checker> = {
         { responseType: "json" }
       );
       const res = await got<{ data: [] }>(
-        `https://api.twitch.tv/helix/users?login=${name}`,
+        `https://api.twitch.tv/helix/users?login=${username}`,
         {
           headers: {
             Authorization: `Bearer ${tokenRes.body.access_token}`,
@@ -145,12 +145,12 @@ export const checkers: Record<string, Checker> = {
    * Wasn't able to find a public way to check username, but the Twitter API
    * works with a bearer token.
    */
-  twitter: async (name) => {
-    log("twitter", name);
+  twitter: async (username) => {
+    log("twitter", username);
     try {
       const { bearer_token } = functions.config().twitter;
       const res = await got<{ data?: {} }>(
-        `https://api.twitter.com/2/users/by/username/${name}`,
+        `https://api.twitter.com/2/users/by/username/${username}`,
         {
           headers: { Authorization: `Bearer ${bearer_token}` },
           responseType: "json",
@@ -181,10 +181,10 @@ export const checkers: Record<string, Checker> = {
   /**
    * Response status code is 200 for existing user and 404 for non-existing.
    */
-  youtube: async (name) => {
-    log("youtube", name);
+  youtube: async (username) => {
+    log("youtube", username);
     try {
-      await got(`https://www.youtube.com/${name}`);
+      await got(`https://www.youtube.com/${username}`);
       return { available: false };
     } catch (e) {
       return { available: true };
