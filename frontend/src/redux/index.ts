@@ -4,13 +4,13 @@ import {
   useDispatch as useDispatchBase,
   useSelector as useSelectorBase,
 } from "react-redux";
-import { createLogger } from "redux-logger";
 
 import { settingSlice } from "./slices/settingSlice";
 import { usernameSlice } from "./slices/usernameSlice";
 
 const middleware = [];
 if (process.env.NODE_ENV === "development") {
+  const { createLogger } = require("redux-logger");
   middleware.push(createLogger());
 }
 
