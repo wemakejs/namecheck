@@ -22,6 +22,7 @@ const stringMap: Record<string, Record<string, string>> = {
     medium: "Medium",
     patreon: "Patreon",
     reddit: "Reddit",
+    tiktok: "TikTok",
     twitch: "Twitch",
     twitter: "Twitter",
     username: "Username",

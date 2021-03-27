@@ -90,6 +90,18 @@ export const checkers: Record<string, Checker> = {
   },
 
   /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
+  tiktok: async (name) => {
+    try {
+      await got(`https://www.tiktok.com/@${name}`);
+      return { available: false };
+    } catch (e) {
+      return { available: true };
+    }
+  },
+
+  /**
    * Wasn't able to find a public way to check username, but the Twitch API
    * works with a bearer token. The bearer token has to be acquired through a
    * separate request.

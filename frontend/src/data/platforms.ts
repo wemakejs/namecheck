@@ -103,16 +103,23 @@ export const platformGroups: PlatformGroup[] = [
         selectedByDefault: true,
       },
       {
-        id: "reddit",
-        getURL: (username) => `http://www.reddit.com/user/${username}`,
+        id: "twitter",
+        getURL: (username) => `http://twitter.com/${username}`,
+        isValid: (username) => !!username.match(/^[A-Za-z0-9_]{1,15}$/),
+        selectedByDefault: true,
+      },
+      {
+        id: "tiktok",
+        getURL: (username) => `https://www.tiktok.com/@${username}`,
         // TODO: add username validator
         isValid: (username) => true,
         selectedByDefault: true,
       },
       {
-        id: "twitter",
-        getURL: (username) => `http://twitter.com/${username}`,
-        isValid: (username) => !!username.match(/^[A-Za-z0-9_]{1,15}$/),
+        id: "reddit",
+        getURL: (username) => `http://www.reddit.com/user/${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
         selectedByDefault: true,
       },
     ],
