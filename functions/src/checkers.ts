@@ -95,8 +95,8 @@ export const checkers: Record<string, Checker> = {
     try {
       res = await got(`https://www.patreon.com/${username}`);
       return { available: false };
-    } catch (e) {
-      res = e.response;
+    } catch (err) {
+      res = err.response;
       return { available: true };
     } finally {
       log("patreon", username, res);
@@ -223,7 +223,7 @@ export const checkers: Record<string, Checker> = {
       res = await got(`https://www.youtube.com/${username}`);
       return { available: false };
     } catch (err) {
-      res = err.res;
+      res = err.response;
       return { available: true };
     } finally {
       log("youtube", username, res);
