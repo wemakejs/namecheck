@@ -82,6 +82,12 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
     }
   },
 
+  /**
+   * Check domain by attempting to resolve IPv4 DNS. This is not 100% accurate
+   * since a domain owner could have purchased the domain without using it.
+   * However, this is very fast and efficient, so going with it until a more
+   * accurate method could be found.
+   */
   web: async (name) => {
     return new Promise((resolve) => {
       dns.resolve4(name, (err) => {
