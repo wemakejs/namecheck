@@ -137,6 +137,10 @@ export const checkers: Record<string, Checker> = {
       );
       return { available: res.body.data.length === 0 };
     } catch (e) {
+      functions.logger.error(
+        `Error occurred when checking Twitch for username: ${username}`,
+        `Status code: ${e.response.statusCode}`
+      );
       return { error: 500 };
     }
   },
@@ -158,7 +162,10 @@ export const checkers: Record<string, Checker> = {
       );
       return { available: !res.body.data };
     } catch (e) {
-      // Errors are returned with status 200 so should not reach this.
+      functions.logger.error(
+        `Error occurred when checking Twitter for username: ${username}`,
+        `Status code: ${e.response.statusCode}`
+      );
       return { error: 500 };
     }
   },
