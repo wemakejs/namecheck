@@ -2,12 +2,11 @@ import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got from "got";
 
-type Checker = (
-  name: string
-) => Promise<{
+type CheckerResponse = {
   available?: boolean;
   error?: number;
-}>;
+};
+type Checker = (name: string) => Promise<CheckerResponse>;
 
 export const checkers: Record<string, Checker> = {
   /**
