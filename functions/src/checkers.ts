@@ -70,7 +70,7 @@ export const checkers: Record<string, Checker> = {
    */
   patreon: async (name) => {
     try {
-      await got(`https://www.patreon.com/${name}/`);
+      await got(`https://www.patreon.com/${name}`);
       return { available: false };
     } catch (e) {
       return { available: true };
@@ -157,7 +157,7 @@ export const checkers: Record<string, Checker> = {
    */
   youtube: async (name) => {
     try {
-      await got(`https://youtube.com/${name}/`);
+      await got(`https://www.youtube.com/${name}`);
       return { available: false };
     } catch (e) {
       return { available: true };
