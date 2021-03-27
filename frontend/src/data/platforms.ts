@@ -140,6 +140,13 @@ export const platformGroups: PlatformGroup[] = [
     id: "productivity",
     platforms: [
       {
+        id: "medium",
+        getURL: (username) => `https://medium.com/@${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
+      {
         id: "github",
         getURL: (username) => `https://www.github.com/${username}`,
         // TODO: add username validator

@@ -19,6 +19,7 @@ const stringMap: Record<string, Record<string, string>> = {
     facebook: "Facebook",
     github: "GitHub",
     instagram: "Instagram",
+    medium: "Medium",
     patreon: "Patreon",
     reddit: "Reddit",
     twitch: "Twitch",
