@@ -2,6 +2,10 @@ import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got from "got";
 
+const log = (platform: string, username: string) => {
+  functions.logger.log(`Checking ${platform} for username: ${username}`);
+};
+
 type CheckerResponse = {
   available?: boolean;
   error?: number;
@@ -16,6 +20,7 @@ export const checkers: Record<string, Checker> = {
    * is taken or not.
    */
   facebook: async (name) => {
+    log("facebook", name);
     try {
       await got(`https://graph.facebook.com/v10.0/${name}`, {
         responseType: "json",
@@ -33,6 +38,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   github: async (name) => {
+    log("github", name);
     try {
       await got(`https://github.com/${name}/`);
       return { available: false };
@@ -45,6 +51,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   instagram: async (name) => {
+    log("instagram", name);
     try {
       await got(`https://www.instagram.com/${name}/`);
       return { available: false };
@@ -57,6 +64,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   medium: async (name) => {
+    log("medium", name);
     try {
       await got(`https://medium.com/@${name}`);
       return { available: false };
@@ -69,6 +77,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   patreon: async (name) => {
+    log("patreon", name);
     try {
       await got(`https://www.patreon.com/${name}`);
       return { available: false };
@@ -81,6 +90,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   reddit: async (name) => {
+    log("reddit", name);
     try {
       await got(`https://www.reddit.com/user/${name}/`);
       return { available: false };
@@ -93,6 +103,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   tiktok: async (name) => {
+    log("tiktok", name);
     try {
       await got(`https://www.tiktok.com/@${name}`);
       return { available: false };
@@ -107,6 +118,7 @@ export const checkers: Record<string, Checker> = {
    * separate request.
    */
   twitch: async (name) => {
+    log("twitch", name);
     try {
       const { client_id, client_secret } = functions.config().twitch;
       const tokenRes = await got.post<{ access_token: string }>(
@@ -134,6 +146,7 @@ export const checkers: Record<string, Checker> = {
    * works with a bearer token.
    */
   twitter: async (name) => {
+    log("twitter", name);
     try {
       const { bearer_token } = functions.config().twitter;
       const res = await got<{ data?: {} }>(
@@ -157,6 +170,7 @@ export const checkers: Record<string, Checker> = {
    * accurate method could be found.
    */
   web: async (domainName) => {
+    log("web", domainName);
     return new Promise((resolve) => {
       dns.resolve4(domainName, (err) => {
         resolve({ available: !!err });
@@ -168,6 +182,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   youtube: async (name) => {
+    log("youtube", name);
     try {
       await got(`https://www.youtube.com/${name}`);
       return { available: false };
