@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: "yarn install --ignore-scripts"
+      - run: "yarn install --prod --ignore-scripts"
       - run: "yarn build:frontend"
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
