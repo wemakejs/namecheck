@@ -14,7 +14,7 @@ type Checker = (
   name: string
 ) => Promise<{
   available?: boolean;
-  error?: boolean;
+  error?: number;
 }>;
 
 export const checkers: Record<string, Checker> = {
@@ -31,7 +31,7 @@ export const checkers: Record<string, Checker> = {
       });
       // The request should fail due to missing auth token.
       // The line below shouldn't be reached.
-      return { error: true };
+      return { error: 500 };
     } catch (e) {
       const { message } = e.response.body.error;
       return { available: message.toLowerCase().includes("do not exist") };
@@ -86,9 +86,7 @@ export const checkers: Record<string, Checker> = {
       );
       return { available: res.body.data.length === 0 };
     } catch (e) {
-      console.log(e.response.body);
-      console.log(e.response.statusCode);
-      return { error: true };
+      return { error: 500 };
     }
   },
 
@@ -109,7 +107,7 @@ export const checkers: Record<string, Checker> = {
       return { available: !res.body.data };
     } catch (e) {
       // Errors are returned with status 200 so should not reach this.
-      return { error: true };
+      return { error: 500 };
     }
   },
 

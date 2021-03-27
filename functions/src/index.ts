@@ -14,7 +14,7 @@ export const checkName = functions.https.onCall(async (data) => {
     (platform === "web" && !tld) ||
     !checker
   ) {
-    return { error: "Invalid Query" };
+    return { error: 401 };
   }
 
   return await checker(name + tld);
