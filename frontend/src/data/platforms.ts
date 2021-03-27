@@ -83,6 +83,12 @@ export const platformGroups: PlatformGroup[] = [
         isValid: isValidDomain,
         selectedByDefault: true,
       },
+      {
+        id: "tech",
+        getURL: (username) => `http://${username}.tech`,
+        isValid: isValidDomain,
+        selectedByDefault: true,
+      },
     ],
   },
   {
