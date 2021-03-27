@@ -17,6 +17,5 @@ export const checkName = functions.https.onCall(async (data) => {
     return { error: "Invalid Query" };
   }
 
-  const available = await checker(name + tld);
-  return { available };
+  return await checker(name + tld);
 });

@@ -10,7 +10,14 @@ const getPage = async (URL: string, launchOptions = {}, gotoOptions = {}) => {
   return page;
 };
 
-export const checkers: Record<string, (name: string) => Promise<boolean>> = {
+type Checker = (
+  name: string
+) => Promise<{
+  available?: boolean;
+  error?: boolean;
+}>;
+
+export const checkers: Record<string, Checker> = {
   /**
    * The Facebook Graph API endpoint https://graph.facebook.com/v10.0/${name}
    * does not work without an authorization token, but nevertheless there is
@@ -24,17 +31,17 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
       });
       // The request should fail due to missing auth token.
       // The line below shouldn't be reached.
-      return false;
+      return { error: true };
     } catch (e) {
       const { message } = e.response.body.error;
-      return message.toLowerCase().includes("do not exist");
+      return { available: message.toLowerCase().includes("do not exist") };
     }
   },
 
   github: async (name) => {
     const page = await getPage(`https://github.com/${name}/`);
     const title = await page.title();
-    return title.toLowerCase().includes("page not found");
+    return { available: title.toLowerCase().includes("page not found") };
   },
 
   /**
@@ -44,9 +51,9 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
   instagram: async (name) => {
     try {
       await got(`https://www.instagram.com/${name}/`);
-      return false;
+      return { available: false };
     } catch (e) {
-      return true;
+      return { available: true };
     }
   },
 
@@ -66,19 +73,18 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
    */
   twitter: async (name) => {
     try {
+      const { bearer_token } = functions.config().twitter;
       const res = await got<{ data?: {} }>(
         `https://api.twitter.com/2/users/by/username/${name}`,
         {
-          headers: {
-            Authorization: `Bearer ${functions.config().twitter.bearer_token}`,
-          },
+          headers: { Authorization: `Bearer ${bearer_token}` },
           responseType: "json",
         }
       );
-      return !res.body.data;
+      return { available: !res.body.data };
     } catch (e) {
       // Errors are returned with status 200 so should not reach this.
-      return false;
+      return { error: true };
     }
   },
 
@@ -88,10 +94,10 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
    * However, this is very fast and efficient, so going with it until a more
    * accurate method could be found.
    */
-  web: async (name) => {
+  web: async (domainName) => {
     return new Promise((resolve) => {
-      dns.resolve4(name, (err) => {
-        resolve(!!err);
+      dns.resolve4(domainName, (err) => {
+        resolve({ available: !!err });
       });
     });
   },
