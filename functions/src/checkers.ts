@@ -126,4 +126,16 @@ export const checkers: Record<string, Checker> = {
       });
     });
   },
+
+  /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
+  youtube: async (name) => {
+    try {
+      await got(`https://youtube.com/${name}/`);
+      return { available: false };
+    } catch (e) {
+      return { available: true };
+    }
+  },
 };
