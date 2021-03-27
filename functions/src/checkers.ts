@@ -1,4 +1,5 @@
 import * as dns from "dns";
+import * as functions from "firebase-functions";
 import got from "got";
 import * as puppeteer from "puppeteer";
 
@@ -47,10 +48,26 @@ export const checkers: Record<string, (name: string) => Promise<boolean>> = {
     return content.toLowerCase().includes("sorry");
   },
 
+  /**
+   * Wasn't able to find a public way to check username, but the Twitter API
+   * works with a bearer token.
+   */
   twitter: async (name) => {
-    const page = await getPage(`https://twitter.com/${name}/`);
-    const title = await page.title();
-    return title.toLowerCase().includes("page not found");
+    try {
+      const res = await got<{ data?: {} }>(
+        `https://api.twitter.com/2/users/by/username/${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${functions.config().twitter.bearer_token}`,
+          },
+          responseType: "json",
+        }
+      );
+      return !res.body.data;
+    } catch (e) {
+      // Errors are returned with status 200 so should not reach this.
+      return false;
+    }
   },
 
   web: async (name) => {
