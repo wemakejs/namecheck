@@ -1,6 +1,7 @@
 import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got, { Response } from "got";
+import { chromium } from "playwright";
 
 const log = (
   platform: string,
@@ -68,14 +69,18 @@ export const checkers: Record<string, Checker> = {
   },
 
   /**
-   * Response status code is 200 for existing user and 404 for non-existing.
+   * Checking for response status code 200 vs 404 works locally, but becomes a
+   * 302 redirect when pushed to cloud functions. Not sure why but suspecting
+   * that Instagram thinks the request is from a bot. Using headless browser
+   * for now. https://stackoverflow.com/questions/66842438
    */
   instagram: async (username) => {
-    const res = await got(`https://www.instagram.com/${username}/`, {
-      throwHttpErrors: false,
-    });
-    const available = res.statusCode === 404;
-    log("instagram", username, available, res);
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto(`https://www.instagram.com/${username}/`);
+    const title = await page.title();
+    const available = title.toLocaleLowerCase().includes("page not found");
+    log("instagram", username, available);
     return { available };
   },
 
@@ -116,14 +121,16 @@ export const checkers: Record<string, Checker> = {
   },
 
   /**
-   * Response status code is 200 for existing user and 404 for non-existing.
+   * Checking for response status code 200 vs 404 works locally, but when pushed
+   * to cloud functions all response become 200. Using headless browser for now.
    */
   tiktok: async (username) => {
-    const res = await got(`https://www.tiktok.com/@${username}`, {
-      throwHttpErrors: false,
-    });
-    const available = res.statusCode === 404;
-    log("tiktok", username, available, res);
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+    await page.goto(`https://www.tiktok.com/@${username}`);
+    const title = await page.title();
+    const available = !title.toLocaleLowerCase().includes("tiktok");
+    log("tiktok", username, available);
     return { available };
   },
 
