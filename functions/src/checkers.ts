@@ -8,21 +8,27 @@ const log = (
   available: boolean,
   res?: Response
 ) => {
-  const message: any[] = [
+  let message: Record<string, any> = {
     platform,
     username,
-    available ? "available" : "taken",
-  ];
+    available,
+  };
   if (res) {
-    message.push({
-      statusCode: res.statusCode,
+    const requestOptions = JSON.parse(JSON.stringify(res.request.options));
+    message = {
+      ...message,
       request: {
-        options: JSON.parse(JSON.stringify(res.request.options)),
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        url: requestOptions.url,
       },
-      response: { headers: res.headers },
-    });
+      response: {
+        statusCode: res.statusCode,
+        headers: res.headers,
+      },
+    };
   }
-  functions.logger.log(...message);
+  functions.logger.log(platform, message);
 };
 
 type CheckerResponse = {
