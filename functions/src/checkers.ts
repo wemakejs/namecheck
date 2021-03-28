@@ -9,15 +9,15 @@ const log = (
   available: boolean,
   res?: Response
 ) => {
-  let message: Record<string, any> = {
+  let details: Record<string, any> = {
     platform,
     username,
     available,
   };
   if (res) {
     const requestOptions = JSON.parse(JSON.stringify(res.request.options));
-    message = {
-      ...message,
+    details = {
+      ...details,
       request: {
         method: requestOptions.method,
         headers: requestOptions.headers,
@@ -29,7 +29,10 @@ const log = (
       },
     };
   }
-  functions.logger.log(platform, message);
+  functions.logger.log(
+    `${username} is ${available ? "available" : "taken"} on ${platform}`,
+    details
+  );
 };
 
 type CheckerResponse = {
