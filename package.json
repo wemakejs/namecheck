@@ -12,6 +12,7 @@
     "build:frontend": "yarn --cwd ./frontend build",
     "build:functions": "yarn --cwd ./functions build",
     "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "firebase deploy --only hosting",
     "config:functions": "yarn --cwd ./functions config:functions",
     "postinstall": "yarn config:functions"
   }
