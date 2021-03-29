@@ -74,16 +74,26 @@ export const checkers: Record<string, Checker> = {
   /**
    * Checking for response status code 200 vs 404 works locally, but becomes a
    * 302 redirect when pushed to cloud functions. Not sure why but suspecting
-   * that Instagram thinks the request is from a bot. Using headless browser
-   * for now. https://stackoverflow.com/questions/66842438
+   * that Instagram thinks the request is from a bot. This JSDOM attempt doesn't
+   * work either.
+   * TODO: figure out how to get around Instagram's redirect
    */
   instagram: async (username) => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto(`https://www.instagram.com/${username}/`);
-    const title = await page.title();
-    const available = title.toLocaleLowerCase().includes("page not found");
-    log("instagram", username, available);
+    let available = !username;
+    // try {
+    //   const resourceLoader = new ResourceLoader({
+    //     proxy: "http://127.0.0.1:9001",
+    //     strictSSL: false,
+    //     userAgent: "Mozilla/5.0",
+    //   });
+    //   await JSDOM.fromURL(`https://www.instagram.com/${username}/`, {
+    //     resources: resourceLoader,
+    //   });
+    // } catch (err) {
+    //   available = true;
+    // } finally {
+    //   log("instagram", username, available);
+    // }
     return { available };
   },
 
@@ -125,15 +135,18 @@ export const checkers: Record<string, Checker> = {
 
   /**
    * Checking for response status code 200 vs 404 works locally, but when pushed
-   * to cloud functions all response become 200. Using headless browser for now.
+   * to cloud functions all response become 200.
+   * TODO: figure out how to check TikTok
    */
   tiktok: async (username) => {
-    const browser = await chromium.launch();
-    const page = await browser.newPage();
-    await page.goto(`https://www.tiktok.com/@${username}`);
-    const title = await page.title();
-    const available = !title.toLocaleLowerCase().includes("tiktok");
-    log("tiktok", username, available);
+    let available = !username;
+    // try {
+    //   await JSDOM.fromURL(`https://www.tiktok.com/@${username}`);
+    // } catch (err) {
+    //   available = true;
+    // } finally {
+    //   log("tiktok", username, available);
+    // }
     return { available };
   },
 

@@ -101,26 +101,26 @@ export const platformGroups: PlatformGroup[] = [
         isValid: (username) => true,
         selectedByDefault: true,
       },
-      {
-        id: "instagram",
-        getURL: (username) => `http://instagram.com/${username}`,
-        // TODO: add username validator
-        isValid: (username) => true,
-        selectedByDefault: true,
-      },
+      // {
+      //   id: "instagram",
+      //   getURL: (username) => `https://www.instagram.com/${username}`,
+      //   // TODO: add username validator
+      //   isValid: (username) => true,
+      //   selectedByDefault: true,
+      // },
       {
         id: "twitter",
         getURL: (username) => `http://twitter.com/${username}`,
         isValid: (username) => !!username.match(/^[A-Za-z0-9_]{1,15}$/),
         selectedByDefault: true,
       },
-      {
-        id: "tiktok",
-        getURL: (username) => `https://www.tiktok.com/@${username}`,
-        // TODO: add username validator
-        isValid: (username) => true,
-        selectedByDefault: true,
-      },
+      // {
+      //   id: "tiktok",
+      //   getURL: (username) => `https://www.tiktok.com/@${username}`,
+      //   // TODO: add username validator
+      //   isValid: (username) => true,
+      //   selectedByDefault: true,
+      // },
       {
         id: "reddit",
         getURL: (username) => `http://www.reddit.com/user/${username}`,
