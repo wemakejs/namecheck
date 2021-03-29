@@ -1,7 +1,6 @@
 import * as dns from "dns";
 import * as functions from "firebase-functions";
 import got, { Response } from "got";
-import { chromium } from "playwright";
 
 const log = (
   platform: string,
@@ -35,6 +34,9 @@ const log = (
   );
 };
 
+// "got" without http errors
+const safeGet = (url: string) => got(url, { throwHttpErrors: false });
+
 type CheckerResponse = {
   available?: boolean;
   error?: number;
@@ -63,9 +65,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   github: async (username) => {
-    const res = await got(`https://github.com/${username}/`, {
-      throwHttpErrors: false,
-    });
+    const res = await safeGet(`https://github.com/${username}/`);
     const available = res.statusCode === 404;
     log("github", username, available, res);
     return { available };
@@ -101,9 +101,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   medium: async (username) => {
-    const res = await got(`https://medium.com/@${username}`, {
-      throwHttpErrors: false,
-    });
+    const res = await safeGet(`https://medium.com/@${username}`);
     const available = res.statusCode === 404;
     log("medium", username, available, res);
     return { available };
@@ -113,9 +111,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   patreon: async (username) => {
-    const res = await got(`https://www.patreon.com/${username}`, {
-      throwHttpErrors: false,
-    });
+    const res = await safeGet(`https://www.patreon.com/${username}`);
     const available = res.statusCode === 404;
     log("patreon", username, available, res);
     return { available };
@@ -125,9 +121,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   reddit: async (username) => {
-    const res = await got(`https://www.reddit.com/user/${username}/`, {
-      throwHttpErrors: false,
-    });
+    const res = await safeGet(`https://www.reddit.com/user/${username}/`);
     const available = res.statusCode === 404;
     log("reddit", username, available, res);
     return { available };
@@ -220,9 +214,7 @@ export const checkers: Record<string, Checker> = {
    * Response status code is 200 for existing user and 404 for non-existing.
    */
   youtube: async (username) => {
-    const res = await got(`https://www.youtube.com/${username}`, {
-      throwHttpErrors: false,
-    });
+    const res = await safeGet(`https://www.youtube.com/${username}`);
     const available = res.statusCode === 404;
     log("youtube", username, available, res);
     return { available };
