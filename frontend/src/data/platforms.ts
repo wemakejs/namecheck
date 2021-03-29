@@ -131,25 +131,6 @@ export const platformGroups: PlatformGroup[] = [
     ],
   },
   {
-    id: "video",
-    platforms: [
-      {
-        id: "youtube",
-        getURL: (username) => `https://www.youtube.com/${username}`,
-        // TODO: add username validator
-        isValid: (username) => true,
-        selectedByDefault: true,
-      },
-      {
-        id: "twitch",
-        getURL: (username) => `https://www.twitch.tv/${username}`,
-        // TODO: add username validator
-        isValid: (username) => true,
-        selectedByDefault: true,
-      },
-    ],
-  },
-  {
     id: "productivity",
     platforms: [
       {
@@ -169,6 +150,25 @@ export const platformGroups: PlatformGroup[] = [
       {
         id: "patreon",
         getURL: (username) => `https://www.patreon.com/${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
+    ],
+  },
+  {
+    id: "video",
+    platforms: [
+      {
+        id: "youtube",
+        getURL: (username) => `https://www.youtube.com/${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
+      {
+        id: "twitch",
+        getURL: (username) => `https://www.twitch.tv/${username}`,
         // TODO: add username validator
         isValid: (username) => true,
         selectedByDefault: true,
