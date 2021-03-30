@@ -1,17 +1,26 @@
 # Name Check
 
-![build status](https://github.com/wemakezone/docs/actions/workflows/firebase-hosting-merge.yml/badge.svg)
+![build status](https://github.com/wemakezone/namecheck.dev/actions/workflows/firebase-hosting-merge.yml/badge.svg)
 
 ## Dependencies
 
-[node 14](https://nodejs.org/en/), [yarn](https://yarnpkg.com/), and
-[firebase-tools](https://www.npmjs.com/package/firebase-tools)
+- [node 14](https://nodejs.org/en/)
+- [yarn](https://yarnpkg.com/)
+- [firebase-tools](https://www.npmjs.com/package/firebase-tools)
+
+Note: `firebase-tools` should be installed globally using yarn:
+
+```
+yarn global add firebase-tools
+```
 
 ## Installation
 
 From the root folder:
 
-`yarn install`
+```
+yarn install
+```
 
 ## Development
 
@@ -19,15 +28,21 @@ From the root folder, run the following 3 commands in different terminals:
 
 Launch frontend:
 
-`yarn start:frontend`
+```
+yarn start:frontend
+```
 
 Build functions and watch for changes:
 
-`build:functions --watch`
+```
+build:functions --watch
+```
 
 Launch functions emulator:
 
-`yarn start:functions`
+```
+yarn start:functions
+```
 
 Once started, you can find the frontend at
 [http://localhost:3000/](http://localhost:3000/), and you can check the
