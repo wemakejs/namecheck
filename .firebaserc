@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "namecheck-dev"
+    "default": "namecheck-dev",
     "development": "namecheck-dev",
-    "production": "namecheck-prod",
+    "production": "namecheck-prod"
   }
 }
