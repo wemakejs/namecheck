@@ -26,22 +26,22 @@ yarn install
 
 From the root folder, run the following 3 commands in different terminals:
 
-Launch frontend:
+1. Build functions and watch for changes:
 
 ```
-yarn start:frontend
+yarn build:functions --watch
 ```
 
-Build functions and watch for changes:
-
-```
-build:functions --watch
-```
-
-Launch functions emulator:
+2. Launch functions emulator:
 
 ```
 yarn start:functions
+```
+
+3. Launch frontend:
+
+```
+yarn start:frontend
 ```
 
 Once started, you can find the frontend at
