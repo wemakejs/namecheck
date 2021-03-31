@@ -44,7 +44,5 @@ yarn start:functions
 yarn start:frontend
 ```
 
-Once started, you can find the frontend at
-[http://localhost:3000/](http://localhost:3000/), and you can check the
-functions emulator dashboard at
-[http://localhost:5002/](http://localhost:5002/).
+Once started, find frontend at [http://localhost:3000/](http://localhost:3000/)
+and emulator dashboard at [http://localhost:5002/](http://localhost:5002/).
