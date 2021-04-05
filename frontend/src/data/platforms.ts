@@ -154,6 +154,13 @@ export const platformGroups: PlatformGroup[] = [
         isValid: (username) => true,
         selectedByDefault: true,
       },
+      {
+        id: "slack",
+        getURL: (username) => `https://${username}.slack.com/`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
     ],
   },
   {

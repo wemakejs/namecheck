@@ -128,6 +128,16 @@ export const checkers: Record<string, Checker> = {
   },
 
   /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
+  slack: async (username) => {
+    const res = await safeGet(`https://${username}.slack.com/`);
+    const available = res.statusCode === 404;
+    log("slack", username, available, res);
+    return { available };
+  },
+
+  /**
    * Checking for response status code 200 vs 404 works locally, but when pushed
    * to cloud functions all response become 200.
    * TODO: figure out how to check TikTok
