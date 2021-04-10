@@ -5,6 +5,7 @@ import medium from "./medium.svg";
 import patreon from "./patreon.svg";
 import reddit from "./reddit.svg";
 import slack from "./slack.svg";
+import strava from "./strava.svg";
 import tiktok from "./tiktok.svg";
 import twitch from "./twitch.svg";
 import twitter from "./twitter.svg";
@@ -19,6 +20,7 @@ export const icons: Record<string, string> = {
   patreon,
   reddit,
   slack,
+  strava,
   tiktok,
   twitch,
   twitter,

@@ -128,6 +128,13 @@ export const platformGroups: PlatformGroup[] = [
         isValid: (username) => true,
         selectedByDefault: true,
       },
+      {
+        id: "strava",
+        getURL: (username) => `https://www.strava.com/athletes/${username}`,
+        // TODO: add username validator
+        isValid: (username) => true,
+        selectedByDefault: true,
+      },
     ],
   },
   {

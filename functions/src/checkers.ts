@@ -138,6 +138,19 @@ export const checkers: Record<string, Checker> = {
   },
 
   /**
+   * Response status code is 200 for existing user and 404 for non-existing.
+   */
+  strava: async (username) => {
+    const res = await got(`https://www.strava.com/athletes/${username}`, {
+      followRedirect: false,
+      throwHttpErrors: false,
+    });
+    const available = res.statusCode === 302;
+    log("strava", username, available, res);
+    return { available };
+  },
+
+  /**
    * Checking for response status code 200 vs 404 works locally, but when pushed
    * to cloud functions all response become 200.
    * TODO: figure out how to check TikTok
