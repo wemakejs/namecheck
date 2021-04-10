@@ -1,6 +1,6 @@
-import { InputBase, Paper } from "@material-ui/core";
+import { IconButton, InputBase, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Search } from "@material-ui/icons";
+import { Clear as ClearIcon, Search as SearchIcon } from "@material-ui/icons";
 import { debounce } from "lodash";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,24 +8,11 @@ import { useDispatch } from "react-redux";
 import { set } from "src/redux/slices/usernameSlice";
 import { useString } from "src/utils";
 
-const useStyles = makeStyles({
-  searchBarContainer: {
-    alignItems: "center",
-    display: "flex",
-    padding: "2px 8px",
-    width: "80%",
-    maxWidth: 600,
-  },
-  searchBar: {
-    marginLeft: 30,
-    marginRight: 6,
-    width: "100%",
-  },
-});
+const { protocol, host } = window.location;
+const baseURL = `${protocol}//${host}/`;
 
 const debouncedSetUsername = debounce((username, setUsername) => {
-  const { protocol, host } = window.location;
-  var path = `${protocol}//${host}/?q=${username}`;
+  var path = `${baseURL}?q=${username}`;
   window.history.pushState({ path }, "", path);
   setUsername(username);
 }, 500);
@@ -43,6 +30,18 @@ export const SearchBar: FC = () => {
       setLocalName(q);
       dispatch(set(q));
     }
+
+    window.onpopstate = () => {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get("q");
+      if (q) {
+        setLocalName(q);
+        dispatch(set(q));
+      } else {
+        setLocalName("");
+        dispatch(set(""));
+      }
+    };
   }, [dispatch]);
 
   const handleNameChange = useCallback(
@@ -54,10 +53,16 @@ export const SearchBar: FC = () => {
     [dispatch]
   );
 
-  const styles = useStyles();
+  const handleClear = useCallback(() => {
+    setLocalName("");
+    dispatch(set(""));
+    window.history.pushState({ path: baseURL }, "", baseURL);
+  }, [dispatch]);
 
+  const styles = useStyles();
   return (
     <Paper className={styles.searchBarContainer} elevation={2}>
+      <SearchIcon />
       <InputBase
         autoFocus
         className={styles.searchBar}
@@ -66,7 +71,27 @@ export const SearchBar: FC = () => {
         value={localName}
         placeholder={s("username")}
       />
-      <Search />
+      <IconButton
+        onClick={handleClear}
+        size="small"
+        style={{ visibility: localName ? "visible" : "hidden" }}
+      >
+        <ClearIcon />
+      </IconButton>
     </Paper>
   );
 };
+
+const useStyles = makeStyles({
+  searchBar: {
+    margin: "0 8px",
+    width: "100%",
+  },
+  searchBarContainer: {
+    alignItems: "center",
+    display: "flex",
+    padding: "2px 8px",
+    width: "80%",
+    maxWidth: 600,
+  },
+});
