@@ -3,6 +3,8 @@ import { LanguageContext } from "./contexts";
 
 const stringMap: Record<string, Record<string, string>> = {
   en: {
+    username: "Enter a username",
+
     // sections
     domainNames: "Domain Names",
     socialMedia: "Social Media",
@@ -27,7 +29,6 @@ const stringMap: Record<string, Record<string, string>> = {
     tiktok: "TikTok",
     twitch: "Twitch",
     twitter: "Twitter",
-    username: "Username",
     web: "Web",
     youtube: "YouTube",
   },
